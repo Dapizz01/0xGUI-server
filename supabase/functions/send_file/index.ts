@@ -2,16 +2,20 @@
 // https://deno.land/manual/getting_started/setup_your_environment
 // This enables autocomplete, go to definition, etc.
 
+import { corsHeaders } from "../_shared/cors.ts";
+
 console.log("Hello from Functions!");
 
 Deno.serve(async (req) => {
-    const { name } = await req.json();
-    const data = {
-        message: `Hello ${name}!`,
-    };
+    const response = await fetch("https://0x0.st", {
+        method: "POST",
+        body: await req.formData(),
+    });
 
-    return new Response(JSON.stringify(data), {
-        headers: { "Content-Type": "application/json" },
+    console.log(response);
+
+    return new Response(await response.text(), {
+        headers: { ...corsHeaders, "Content-Type": "text/plain" },
     });
 });
 

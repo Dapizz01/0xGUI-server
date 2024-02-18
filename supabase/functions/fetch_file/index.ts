@@ -10,9 +10,19 @@ Deno.serve(async (req) => {
     const { file_code } = await req.json();
 
     const response = await fetch("https://0x0.st/" + file_code);
-    console.log(response.headers);
+    if (!response.ok) {
+        // TODO: Handle 0x0.st bad gateway / other errors
 
-    return new Response(await response.text(), {
+        return new Response("", {
+            headers: {
+                ...corsHeaders,
+            },
+            status: 404,
+            statusText: "The requested file doesn't exist",
+        });
+    }
+
+    return new Response(await response.blob(), {
         headers: {
             ...corsHeaders,
             "Content-Type": response.headers.get("Content-Type") ?? "", // Sets content type to "" if the get() returns null or undefined
