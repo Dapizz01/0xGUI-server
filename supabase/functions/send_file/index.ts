@@ -12,8 +12,6 @@ Deno.serve(async (req) => {
         body: await req.formData(),
     });
 
-    console.log(response);
-
     return new Response(await response.text(), {
         headers: { ...corsHeaders, "Content-Type": "text/plain" },
     });

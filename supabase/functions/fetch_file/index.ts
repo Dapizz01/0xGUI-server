@@ -7,9 +7,9 @@ import { corsHeaders } from "../_shared/cors.ts";
 console.log("Hello from Functions!");
 
 Deno.serve(async (req) => {
-    const { file_code } = await req.json();
+    const { filename } = await req.json();
 
-    const response = await fetch("https://0x0.st/" + file_code);
+    const response = await fetch("https://0x0.st/" + filename);
     if (!response.ok) {
         // TODO: Handle 0x0.st bad gateway / other errors
 
